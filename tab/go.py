@@ -334,21 +334,26 @@ def go_tab():
                 # logger.info(f"confirmInfo: {request_result}")
                 # tickets_info["pay_money"] = request_result["data"]["pay_money"]
                 logger.info(f"2）创建订单")
-                tickets_info["timestamp"] = int(time.time()) * 100
-                tickets_info["again"] = "0"
-                tickets_info["deviceId"] = "7d4091"+str(randint(0,9))+"757f5ed"+str(randint(0,9))+"7a3a0ebeea91a45f2"
-                tickets_info["requestSource"] = "neul-next"
-                tickets_info["version"] = "1.1.0"
-                tickets_info["order_type"] = "1"
+                now_time = int(time.time()*1000)
+                device_Id = uuid.uuid4()
+                device_Id_str = str(device_Id).replace("-","")
+                tickets_info.pop("detail")
+                tickets_info.pop("buyer")
+                tickets_info.pop("tel")
+                tickets_info.pop("deliver_info")
+                tickets_info["timestamp"] = now_time
+                tickets_info["id_bind"] = 2
+                tickets_info["need_contact"] = 0
+                tickets_info["is_package"] = 0
+                tickets_info["package_num"] = 1
+                tickets_info["contactInfo"] = None
                 tickets_info["coupon_code"] = ""
+                tickets_info["again"] = 0
+                tickets_info["deviceId"] = device_Id_str
+                tickets_info["version"] = "1.1.0"
+                tickets_info["clickPosition"] = {"x":274,"y":796,"origin":now_time-2000,"now":now_time+1}
+                tickets_info["requestSource"] = "neul-next"
                 tickets_info["newRisk"] = True
-                tickets_info["clickPosition"] = (
-                    '{"x":1028,"y":279,"origin":'
-                    + str(int(time.time()) * 100 - 1000)
-                    + ',"now":'
-                    + str(int(time.time()) * 100 + 1)
-                    + "}"
-                )
                 payload = format_dictionary_to_string(tickets_info)
                 @retry.retry(exceptions=RequestException, tries=60, delay=interval / 1000)
                 def inner_request():
