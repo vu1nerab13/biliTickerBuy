@@ -19,3 +19,4 @@ pyvenv.cfg
 lib
 bin
 share
+.DS_Store

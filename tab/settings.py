@@ -117,6 +117,7 @@ def on_submit_ticket_id(num):
         addr_str_list = [
             f"{item['addr']}-{item['name']}-{item['phone']}" for item in addr_value
         ]
+        addr_str_list = ["地球"]
 
         return [
             gr.update(choices=ticket_str_list),
